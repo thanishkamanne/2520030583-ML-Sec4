@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrafficSense AI | Traffic Classification</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">TS</div>
+      <div>
+        <h1>TrafficSense <span>AI</span></h1>
+        <p>Intelligent Traffic Classification System</p>
+      </div>
+    </div>
+    <div class="status"><i></i> Model Online</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">MACHINE LEARNING • RANDOM FOREST</p>
+        <h2>Predict traffic intensity<br><strong>from road conditions.</strong></h2>
+        <p class="hero-text">Enter the traffic observation details below. The trained Random Forest model will process your inputs and classify the traffic as <b>Light, Medium, or Heavy</b>.</p>
+      </div>
+      <div class="hero-card">
+        <div class="mini-label">MODEL OUTPUT</div>
+        <div class="hero-number">3</div>
+        <div class="hero-caption">traffic classes</div>
+        <div class="class-pills"><span>Light</span><span>Medium</span><span>Heavy</span></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card form-card">
+        <div class="card-heading">
+          <div>
+            <p class="section-kicker">INPUT DATA</p>
+            <h3>Traffic Observation</h3>
+          </div>
+          <span class="step">7 fields</span>
+        </div>
+
+        <form id="predictionForm">
+          <div class="form-grid">
+            <label>
+              <span>Date <em>*</em></span>
+              <input id="date" type="date" required>
+              <small>Stored by the model as YYYYMMDD.</small>
+            </label>
+
+            <label>
+              <span>Timestamp <em>*</em></span>
+              <input id="timestamp" type="number" step="0.00001" min="0" placeholder="e.g. 16.01638" required>
+              <small>Use the dataset's numeric timestamp format.</small>
+            </label>
+
+            <label>
+              <span>Direction <em>*</em></span>
+              <select id="direction" required>
+                <option value="south">South</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Day / Night <em>*</em></span>
+              <select id="day_night" required>
+                <option value="day">Day</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Weather <em>*</em></span>
+              <select id="weather" required>
+                <option value="">Select weather</option>
+                <option value="clear">Clear</option>
+                <option value="overcast">Overcast</option>
+                <option value="rain">Rain</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Start Frame <em>*</em></span>
+              <input id="start_frame" type="number" min="0" step="1" placeholder="e.g. 2" required>
+            </label>
+
+            <label class="full">
+              <span>Number of Frames <em>*</em></span>
+              <input id="number_of_frames" type="number" min="1" step="1" placeholder="e.g. 53" required>
+              <small>Number of video frames represented by this traffic observation.</small>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button type="button" id="demoBtn" class="secondary">Fill Sample Data</button>
+            <button type="reset" id="resetBtn" class="ghost">Clear</button>
+            <button type="submit" id="predictBtn" class="primary">
+              <span class="btn-text">Run Traffic Prediction</span>
+              <span class="spinner"></span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card result-card" id="resultCard">
+        <div class="card-heading">
+          <div>
+            <p class="section-kicker">PREDICTION</p>
+            <h3>Model Result</h3>
+          </div>
+          <span id="resultBadge" class="result-badge idle">Waiting</span>
+        </div>
+
+        <div id="emptyResult" class="empty-result">
+          <div class="empty-icon">⌁</div>
+          <h4>Ready for analysis</h4>
+          <p>Complete the form and click <b>Run Traffic Prediction</b> to get the model output.</p>
+        </div>
+
+        <div id="resultContent" class="hidden">
+          <div class="prediction-box">
+            <div class="prediction-label">Predicted traffic class</div>
+            <div id="predictionValue" class="prediction-value">Medium</div>
+            <div class="confidence-row">
+              <span>Model confidence</span><b id="confidenceValue">0%</b>
+            </div>
+            <div class="progress"><div id="confidenceBar"></div></div>
+          </div>
+
+          <div class="prob-title">Class probabilities</div>
+          <div class="prob-list" id="probList"></div>
+
+          <div class="input-summary">
+            <div class="summary-title">Submitted observation</div>
+            <div id="summaryGrid" class="summary-grid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-row">
+      <div class="info-card"><div class="info-icon">01</div><div><b>Enter data</b><p>Provide the seven observations used by the trained model.</p></div></div>
+      <div class="info-card"><div class="info-icon">02</div><div><b>Run model</b><p>Your data is sent securely to the local Flask prediction API.</p></div></div>
+      <div class="info-card"><div class="info-icon">03</div><div><b>View result</b><p>See the predicted class, confidence and probability breakdown.</p></div></div>
+    </section>
+  </main>
+
+  <footer>TrafficSense AI • Local ML Prediction Dashboard</footer>
+</div>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
