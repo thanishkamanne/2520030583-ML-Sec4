@@ -1,7 +1,8 @@
 # RoadPulse AI — Traffic Video Intelligence
 
 A student-project prototype that accepts an uploaded road video, uses a pretrained YOLOv8 detector plus ByteTrack tracking to detect/track common vehicle classes, produces an annotated video, summarizes unique tracked vehicles, and shows provisional traffic-level and vehicle-activity signals.
-
+## Deployment url:
+https://roadpulse-ai-s9oc.onrender.com
 ## Important scope and limitations
 
 - This is a **video-analysis prototype**, not a validated traffic-control or reliable forecasting system.
